@@ -1,0 +1,62 @@
+module enemy(
+	input clk, 
+	input spawn,
+	input [3:0] initial_state,
+	input [1:0] initial_type,
+	
+	input fire_mode,
+	input fire,
+	input ss_angle_state,
+	
+	output reg alive,
+	output reg [3:0] health,
+	output reg [3:0] angle_state,
+	output reg [1:0] emeny_type,
+	output reg [9:0] x_coordinate,
+	output reg [9:0] y_coordinate,
+	output collision
+);
+
+	initial begin
+		alive = 0;
+	end
+	
+	always @(posedge clk) begin
+		if (~alive && spawn) begin
+			alive <= 1;
+			angle_state <= initial_state;
+			emeny_type <= initial_type;
+			case (emeny_type)
+				0: health <= 4'h2;
+				1: health <= 4'h4;
+				2: health <= 4'h8;
+				3: health <= 4'h8;
+			endcase
+		end
+		
+		else if (health == 0 || health > 8) begin
+			alive <= 0;
+		end
+		
+		if (fire) begin
+			case(fire_mode) 
+				0: begin
+					if (angle_state == ss_angle_state || angle_state == ss_angle_state + 1 || angle_state == ss_angle_state - 1) begin
+						health <= health - 2;
+					end
+				
+				
+				end
+				1: begin 					
+					if (angle_state == ss_angle_state || angle_state == ss_angle_state + 1 || angle_state == ss_angle_state - 1|| angle_state == ss_angle_state + 2 || angle_state == ss_angle_state - 2) begin
+						health <= health - 1;
+					end
+				end
+		end
+	end
+	
+	
+	
+	
+	
+endmodule

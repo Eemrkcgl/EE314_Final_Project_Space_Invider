@@ -1,0 +1,3 @@
+Warning (10268): Verilog HDL information at score_handler.v(9): always construct contains both blocking and non-blocking assignments
+Warning (10268): Verilog HDL information at input_controller.v(25): always construct contains both blocking and non-blocking assignments
+Warning (10268): Verilog HDL information at score_to_bcd.v(11): always construct contains both blocking and non-blocking assignments

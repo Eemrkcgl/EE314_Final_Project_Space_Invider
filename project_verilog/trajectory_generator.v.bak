@@ -1,0 +1,78 @@
+module trajectory_generator(
+    input  clk,
+    input  alive,                
+    input  [3:0] angle_state, 
+    output reg [9:0] x_pixel, 
+    output reg [8:0] y_pixel, 
+    output reg collusion    
+);
+
+    parameter ss_left_top_x = 235;
+    parameter ss_left_top_y = 235;
+    parameter ss_right_bottom_x = 235 + 20;
+    parameter ss_right_bottom_y = 235 + 20;
+
+    reg signed [10:0] x_pos;
+    reg signed [9:0] y_pos;
+    reg initialized = 0; 
+	 
+    always @(posedge clk) begin
+			if (alive && ~initialized) begin
+			
+				initialized <= 1; 
+				
+            case (angle_state)
+                0:  {x_pos, y_pos} <= {0, 0};
+                1:  {x_pos, y_pos} <= {122, 0};
+                2:  {x_pos, y_pos} <= {221, 0};
+                3:  {x_pos, y_pos} <= {320, 0};
+                4:  {x_pos, y_pos} <= {441, 0};
+                5:  {x_pos, y_pos} <= {441, 125};
+                6:  {x_pos, y_pos} <= {441, 221};
+                7:  {x_pos, y_pos} <= {441, 313};
+                8:  {x_pos, y_pos} <= {441, 441};
+                9:  {x_pos, y_pos} <= {320, 441};
+                10: {x_pos, y_pos} <= {221, 441};
+                11: {x_pos, y_pos} <= {122, 441};
+                12: {x_pos, y_pos} <= {0, 441};
+                13: {x_pos, y_pos} <= {0, 313};
+                14: {x_pos, y_pos} <= {0, 221};
+                15: {x_pos, y_pos} <= {0, 125};
+            endcase
+        end
+
+        else if (alive && initialized) begin
+		  
+			   x_pixel <= x_pos[9:0];
+				y_pixel <= y_pos[8:0];
+				
+            case (angle_state)
+                0:  begin x_pos <= x_pos + 7; y_pos <= y_pos + 7; end    // 135°
+                1:  begin x_pos <= x_pos + 4; y_pos <= y_pos + 9; end    // 112.5°
+                2:  begin x_pos <= x_pos;     y_pos <= y_pos + 7; end    // 90°
+                3:  begin x_pos <= x_pos - 4; y_pos <= y_pos + 9; end    // 67.5°
+                4:  begin x_pos <= x_pos - 7; y_pos <= y_pos + 7; end    // 45°
+                5:  begin x_pos <= x_pos - 9; y_pos <= y_pos + 4; end    // 22.5°
+                6:  begin x_pos <= x_pos - 7; y_pos <= y_pos;     end    // 0°
+                7:  begin x_pos <= x_pos - 9; y_pos <= y_pos - 4; end    // 337.5°
+                8:  begin x_pos <= x_pos - 7; y_pos <= y_pos - 7; end    // 315°
+                9:  begin x_pos <= x_pos - 4; y_pos <= y_pos - 9; end    // 292.5°
+                10: begin x_pos <= x_pos;     y_pos <= y_pos - 7; end    // 270°
+                11: begin x_pos <= x_pos + 4; y_pos <= y_pos - 9; end    // 247.5°
+                12: begin x_pos <= x_pos + 7; y_pos <= y_pos - 7; end    // 225°
+                13: begin x_pos <= x_pos + 9; y_pos <= y_pos - 4; end    // 202.5°
+                14: begin x_pos <= x_pos + 7; y_pos <= y_pos;     end    // 180°
+                15: begin x_pos <= x_pos + 9; y_pos <= y_pos + 4; end    // 157.5°
+            endcase
+		 end
+
+
+		if ((x_pos < ss_right_bottom_x && (x_pos + alien_size) > ss_left_top_x) &&
+			 (y_pos < ss_right_bottom_y && (y_pos + alien_size) > ss_left_top_y) && show_alien) begin
+			 
+			collusion <= 1;
+			alive <= 0;
+
+        end
+    end
+endmodule

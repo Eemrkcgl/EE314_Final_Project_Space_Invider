@@ -1,0 +1,31 @@
+module vga_driver(
+	input clk,
+	input [9:0] h_count,
+	input [9:0] v_count,
+	input [3:0] ss_angle_state,
+	input fire_mode,
+	
+
+
+	output reg [7:0] o_red,
+	output reg [7:0] o_green,
+	output reg [7:0] o_blue
+);
+
+	parameter ss_height = 75;
+	parameter ss_width = 75;
+	parameter ss_start_x = 203;
+	parameter ss_start_y = 203;
+	
+	parameter fire_mode_height = 24;
+	parameter fire_mode_width = 24;
+	parameter fire_mode_start_x = 548;
+	parameter fire_mode_start_y = 454;
+	
+	reg [14:0] ss_pixel_address;
+	wire [2:0] ss_pixel_data;
+
+	wire [1:0] bullet_pixel_data;
+	reg [10:0] bullet_adress;
+	
+	ss_image_memory(clk, ss_angle_state, ss_pixel_address, ss_pixel_data);

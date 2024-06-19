@@ -1,0 +1,22 @@
+module total_enemies(
+	input clk,
+	input fire_clk,
+	input spawn,
+	input fire,
+	input fire_mode,
+	input [3:0] ss_angle_state,
+
+	output reg [7:0] alive,
+	output [1:0] reg [7:0] enemy_types,
+	output [1:0] reg [7:0] enemy_types,
+	output [3:0] reg [7:0] healths,
+	output [9:0] reg [7:0] x_coordinates, 
+   output [8:0] reg [7:0] y_coordinates,
+   output reg end_game;
+);
+
+
+	assign end_game = || collisions;
+	
+	
+endmodule
