@@ -69,4 +69,4 @@ Playing the Game:
 
 Use the left and right controls to move your spaceship.
 Press the fire button to shoot at aliens.
-Your objective is to shoot down all aliens before they reach the bottom of the screen.
+Your objective is to shoot down all aliens before they reach the middle of the screen.
